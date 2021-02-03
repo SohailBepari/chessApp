@@ -1,0 +1,23 @@
+#myBoard{
+    width : 40vw;
+    margin : auto;
+    margin-top: 5vh;
+}
+#timer{
+    font-size:xx-large;
+    position: absolute;
+    top :5vh;
+    right : 20vw;
+}
+#buttondiv{
+    margin-top: 2vh;
+    text-align: center;
+}
+button{
+    height: 5vh;
+    width: 10vw;
+    background-color: #b58863;
+    color : white;
+    border: 0px;
+
+}
