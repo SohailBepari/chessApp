@@ -19,5 +19,17 @@ button{
     background-color: #b58863;
     color : white;
     border: 0px;
-
 }
+@media only screen and (max-width: 600px) {
+    #myBoard{
+        width : 80vw;
+        margin-top: 10vh;
+    }
+    #timer{
+        top : 3vh;
+        right : 10vw;
+    }
+    button{
+        width : 20vw;
+    }
+  }

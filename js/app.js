@@ -1,20 +1,29 @@
 let board = null;
 let game = new Chess();
-let Msgdiv = document.getElementById('gameMsg');
 let input = document.getElementById("timer"), add;
 
+let globalTime = 300;
+
+function setClock(num){
+	let minutes = Math.floor(num/60);
+	let seconds = num%60;
+	return String(minutes) + ":" + String(seconds.toFixed(1));
+}
 function start() {
 	add = setInterval(function() {
-	  input.innerHTML = String((Number(input.innerHTML)-0.1).toFixed(2));
-	  if(Number(input.innerHTML) <= 0)
+	  globalTime = globalTime-0.1;
+	  input.innerHTML = setClock(globalTime);
+	  if(globalTime <= 0)
 		resign();
 	}, 100);
 }
 
 function onDrop(source, target, piece, newPos, oldPos, orientation){
 	let validMove = game.move({from : source, to : target, promotion: 'q'});
-	if(validMove)
-		window.setTimeout(makeRandomMove, 250);
+	if(validMove){
+		//window.setTimeout(makeRandomMove, 250);
+		window.setTimeout(makeAImove, 100);
+	}
 	else
 		return 'snapback';
 }
@@ -39,8 +48,15 @@ function makeRandomMove(){
 	}
 }
 
+function makeAImove(){
+	if(game.turn() == 'b'){
+		game.move(calculateBestMove(game));
+		board.position(game.fen());
+	}
+}
 function onChange(){
-	if(game.turn() == 'w'){
+	console.log(game.fen());
+	if(game.turn() == 'w' && game.fen() != 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'){
 		start();
 	}
 	else
@@ -52,19 +68,23 @@ function onChange(){
 			loser = 'White';
 		}
 		window.alert(winner + ' has won');
-		input.innerHTML = '30';
+		globalTime = 300;
+		input.innerHTML = setClock(globalTime);
 		clearInterval(add);
 	}
 	if(game.in_draw()){
 		window.alert('The game has been drawn');
-		input.innerHTML = '30';
+		globalTime = 300;
+		input.innerHTML = setClock(globalTime);
 		clearInterval(add);
 	}
 }
+
 function resetGame(){
 	game.reset();
 	board.position('start');
-	input.innerHTML = '30';
+	globalTime = 300;
+	input.innerHTML = setClock(globalTime);
 	clearInterval(add);
 }
 function resign(){
